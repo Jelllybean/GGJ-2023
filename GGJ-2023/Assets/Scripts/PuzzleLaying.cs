@@ -73,9 +73,12 @@ public class PuzzleLaying : MonoBehaviour
                     _index = i;
                 }
             }
+            selectedPuzzlePiece.GetComponent<BoxCollider2D>().enabled = true;
+
             isGridLocationTaken[_index] = true;
             selectedPuzzlePiece.position = _closestLocation.position;
-            StartCoroutine(CheckAllPieces());
+            //StartCoroutine(CheckAllPieces());
+            CheckAllPieces();
             placementAudio.clip = audioClips[1];
             placementAudio.Play();
         }
@@ -92,15 +95,14 @@ public class PuzzleLaying : MonoBehaviour
         //}
     }
 
-    public IEnumerator CheckAllPieces()
+    public void CheckAllPieces()
     {
         for (int i = 0; i < puzzlePieces.Count; i++)
         {
-            BoxCollider2D _collider = puzzlePieces[i].GetComponent<BoxCollider2D>();
-            _collider.enabled = false;
+            //puzzlePieces[i].GetComponent<BoxCollider2D>().enabled = false;
             puzzlePieces[i].Placed();
-            _collider.enabled = true;
-            yield return new WaitForSeconds(0.05f);
+            //puzzlePieces[i].GetComponent<BoxCollider2D>().enabled = true;
+            //yield return new WaitForSeconds(5f);
         }
     }
 }
