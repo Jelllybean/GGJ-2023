@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.EventSystems;
 
 namespace FreeDraw
@@ -13,6 +14,7 @@ namespace FreeDraw
     public class Drawable : MonoBehaviour
     {
         [SerializeField] private Camera camera;
+        [SerializeField] private Sprite earthDrawingSprite;
         // PEN COLOUR
         public static Color Pen_Colour = Color.red;     // Change these to change the default drawing settings
         // PEN WIDTH (actually, it's a radius, in pixels)
@@ -46,8 +48,8 @@ namespace FreeDraw
 
 
 
-//////////////////////////////////////////////////////////////////////////////
-// BRUSH TYPES. Implement your own here
+        //////////////////////////////////////////////////////////////////////////////
+        // BRUSH TYPES. Implement your own here
 
 
         // When you want to make your own type of brush effects,
@@ -87,14 +89,14 @@ namespace FreeDraw
             // 3. Actually apply the changes we marked earlier
             // Done here to be more efficient
             ApplyMarkedPixelChanges();
-            
+
             // 4. If dragging, update where we were previously
             previous_drag_position = pixel_pos;
         }
 
 
 
-        
+
         // Default brush type. Has width and colour.
         // Pass in a point in WORLD coordinates
         // Changes the surrounding pixels of the world_point to the static pen_colour
@@ -128,7 +130,7 @@ namespace FreeDraw
             // PenBrush is the NAME of the method we want to set as our current brush
             current_brush = PenBrush;
         }
-//////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -284,12 +286,20 @@ namespace FreeDraw
         // Changes every pixel to be the reset colour
         public void ResetCanvas()
         {
-            drawable_texture.SetPixels(clean_colours_array);
+            //clean_colours_array = new Color[(int)drawable_sprite.rect.width * (int)drawable_sprite.rect.height];
+            //for (int x = 0; x < (int)drawable_sprite.rect.width; x++)
+            //{
+            //    for (int y = 0; y < (int)drawable_sprite.rect.height; y++)
+            //    {
+            //        drawable_texture.SetPixel(x, y, clean_colours_array[y]);
+            //    }
+            //}
+            //drawable_texture.SetPixels(clean_colours_array);
             drawable_texture.Apply();
         }
 
 
-        
+
         void Awake()
         {
             drawable = this;
@@ -297,16 +307,83 @@ namespace FreeDraw
             current_brush = PenBrush;
 
             drawable_sprite = this.GetComponent<SpriteRenderer>().sprite;
-            drawable_texture = drawable_sprite.texture;
+            //drawable_texture = drawable_sprite.texture;
+            UpdateCharacterTexture();
+            //drawable_texture = CopyTexture2D(earthDrawingSprite.texture);
+            //drawable_texture.Apply();
 
             // Initialize clean pixels to use
-            clean_colours_array = new Color[(int)drawable_sprite.rect.width * (int)drawable_sprite.rect.height];
-            for (int x = 0; x < clean_colours_array.Length; x++)
-                clean_colours_array[x] = Reset_Colour;
+            //clean_colours_array = new Color[(int)drawable_sprite.rect.width * (int)drawable_sprite.rect.height];
+            //for (int x = 0; x < clean_colours_array.Length; x++)
+            //    clean_colours_array[x] = Reset_Colour;
 
+
+            //clean_colours_array = new Color[(int)earthDrawingSprite.rect.width * (int)earthDrawingSprite.rect.height];
+            //for (int x = 0; x < (int)earthDrawingSprite.rect.width; x++)
+            //{
+            //    for (int y = 0; y < (int)earthDrawingSprite.rect.height; y++)
+            //    {
+            //        clean_colours_array[x] = earthDrawingSprite.texture.GetPixel(x, y);
+            //    }
+            //}
             // Should we reset our canvas image when we hit play in the editor?
             if (Reset_Canvas_On_Play)
                 ResetCanvas();
+        }
+
+        public Texture2D CopyTexture2D(Texture2D copiedTexture)
+        {
+            //Create a new Texture2D, which will be the copy.
+            Texture2D texture = new Texture2D(copiedTexture.width, copiedTexture.height);
+            //Choose your filtermode and wrapmode here.
+            texture.filterMode = FilterMode.Point;
+            texture.wrapMode = TextureWrapMode.Clamp;
+
+            int y = 0;
+            while (y < texture.height)
+            {
+                int x = 0;
+                while (x < texture.width)
+                {
+                    //INSERT YOUR LOGIC HERE
+                    if (copiedTexture.GetPixel(x, y) == Color.green)
+                    {
+                        //This line of code and if statement, turn Green pixels into Red pixels.
+                        texture.SetPixel(x, y, Color.red);
+                    }
+                    else
+                    {
+                        //This line of code is REQUIRED. Do NOT delete it. This is what copies the image as it was, without any change.
+                        texture.SetPixel(x, y, copiedTexture.GetPixel(x, y));
+                    }
+                    ++x;
+                }
+                ++y;
+            }
+            //Name the texture, if you want.
+            texture.name = ("tempEarthArth");
+
+            //This finalizes it. If you want to edit it still, do it before you finish with .Apply(). Do NOT expect to edit the image after you have applied. It did NOT work for me to edit it after this function.
+            texture.Apply();
+
+            //Return the variable, so you have it to assign to a permanent variable and so you can use it.
+            return texture;
+        }
+
+        public void UpdateCharacterTexture()
+        {
+            //This calls the copy texture function, and copies it. The variable characterTextures2D is a Texture2D which is now the returned newly copied Texture2D.
+            drawable_texture = CopyTexture2D(earthDrawingSprite.texture);
+
+            //Get your SpriteRenderer, get the name of the old sprite,  create a new sprite, name the sprite the old name, and then update the material. If you have multiple sprites, you will want to do this in a loop- which I will post later in another post.
+            SpriteRenderer sr = GetComponent<SpriteRenderer>();
+            string tempName = sr.sprite.name;
+            sr.sprite = Sprite.Create(drawable_texture, sr.sprite.rect, new Vector2(0.5f, 0.5f), 50);
+            sr.sprite.name = "AAAAAH";
+
+            //sr.material.mainTexture = drawable_texture;
+            //sr.material.shader = Shader.Find("Sprites/Transparent Unlit");
+
         }
     }
 }
