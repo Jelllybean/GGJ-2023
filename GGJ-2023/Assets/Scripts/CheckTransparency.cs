@@ -6,7 +6,8 @@ using UnityEngine.UIElements;
 public class CheckTransparency : MonoBehaviour
 {
 
-    [SerializeField] private Transform buriedItem;
+    public Transform buriedItem;
+    public BuriedItem currentDugItem;
     public GameObject filler;
 
     public Vector2 fillerSize = Vector2.one * 0.5f;
@@ -78,7 +79,10 @@ public class CheckTransparency : MonoBehaviour
 
         if(totalCleared >= 2500)
         {
-            Debug.Log("yooo je hebt hem");
+            if(currentDugItem)
+            {
+                currentDugItem.SetToFound();
+            }
         }
     }
 
