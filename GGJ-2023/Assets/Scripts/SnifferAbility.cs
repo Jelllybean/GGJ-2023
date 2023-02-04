@@ -10,11 +10,13 @@ public class SnifferAbility : MonoBehaviour
     [SerializeField] private List<DiggableItem> diggableItemsInRange = new List<DiggableItem>();
 
     [SerializeField] private DiggableItem closestDiggableItem;
+    [SerializeField] private GameObject miniGameHolder;
+    [SerializeField] private GameObject normalGameHolder;
 
     [SerializeField] private Slider rangeIndicator;
     [SerializeField] private Slider staminaIndicator;
 
-    [SerializeField] private float stamina;
+    public float stamina;
 
     private float distance;
 
@@ -38,7 +40,7 @@ public class SnifferAbility : MonoBehaviour
             }
         }
 
-        staminaIndicator.value = Mathf.MoveTowards(staminaIndicator.value, stamina, 0.4f * Time.deltaTime);
+        staminaIndicator.value = Mathf.MoveTowards(staminaIndicator.value, stamina, 0.6f * Time.deltaTime);
 
         if (closestDiggableItem)
         {
@@ -49,7 +51,6 @@ public class SnifferAbility : MonoBehaviour
             //Mathf.Lerp(0,)
             distance = Vector2.Distance(closestDiggableItem.transform.position, transform.position);
             rangeIndicator.value = Mathf.InverseLerp(closestDiggableItem.radius, closestDiggableItem.innerRadius, distance) * 3;
-
         }
 
 
@@ -60,6 +61,9 @@ public class SnifferAbility : MonoBehaviour
                 if (distance < closestDiggableItem.innerRadius)
                 {
                     //start digging sequence
+                    miniGameHolder.SetActive(true);
+                    normalGameHolder.SetActive(false);
+                    Movement.MovementSingleton.canMove = false;
                 }
             }
             stamina -= 1;
