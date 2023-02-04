@@ -10,10 +10,12 @@ public class DiggingMiniGame : MonoBehaviour
     [SerializeField] private Vector2 mouseInput;
 
     [SerializeField] private SnifferAbility staminaManagement;
+    [SerializeField] private CheckTransparency transparencyChecker;
 
     void Start()
     {
         drawingSettings.SetEraser();
+        transparencyChecker.StartMiniGame();
     }
 
     void Update()
@@ -21,6 +23,14 @@ public class DiggingMiniGame : MonoBehaviour
         mouseInput.x = Input.GetAxis("Mouse X");
         mouseInput.y = Input.GetAxis("Mouse Y");
 
+        if(Input.GetMouseButton(0))
+        {
+            transparencyChecker.CheckIfDugUp();
+        }
+        if(Input.GetMouseButtonUp(0))
+        {
+            transparencyChecker.Test();
+        }
         if ((Mathf.Abs(mouseInput.x) + 0.5f) > Mathf.Abs(mouseInput.y))
         {
             drawingSettings.SetMarkerWidth(10);
