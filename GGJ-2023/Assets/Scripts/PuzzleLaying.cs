@@ -5,13 +5,16 @@ using UnityEngine;
 public class PuzzleLaying : MonoBehaviour
 {
     [SerializeField] private List<Transform> puzzleGridLocations = new List<Transform>();
+    [SerializeField] private List<bool> isGridLocationTaken = new List<bool>();
+
+    [SerializeField] private List<PuzzlePiece> puzzlePieces = new List<PuzzlePiece>();
 
     [SerializeField] private Transform selectedPuzzlePiece;
     [SerializeField] private LayerMask puzzlePieceLayer;
 
     [SerializeField] private AudioSource placementAudio;
     [SerializeField] private List<AudioClip> audioClips = new List<AudioClip>();
-    
+
 
     void Start()
     {
@@ -28,8 +31,24 @@ public class PuzzleLaying : MonoBehaviour
             {
                 selectedPuzzlePiece = hit.collider.transform;
             }
-            placementAudio.clip = audioClips[0];
-            placementAudio.Play();
+            if (selectedPuzzlePiece)
+            {
+                selectedPuzzlePiece.GetComponent<BoxCollider2D>().enabled = false;
+                placementAudio.clip = audioClips[0];
+                placementAudio.Play();
+
+                float _lowestDistance = 1000;
+                for (int i = 0; i < puzzleGridLocations.Count; i++)
+                {
+                    float _distance = Vector2.Distance(selectedPuzzlePiece.position, puzzleGridLocations[i].transform.position);
+                    if (_distance < _lowestDistance)
+                    {
+                        _lowestDistance = _distance;
+                        isGridLocationTaken[i] = false;
+                    }
+                }
+            }
+
         }
 
         if (Input.GetMouseButton(0) && selectedPuzzlePiece)
@@ -43,6 +62,7 @@ public class PuzzleLaying : MonoBehaviour
         {
             float _lowestDistance = 1000;
             Transform _closestLocation = null;
+            int _index = 0;
             for (int i = 0; i < puzzleGridLocations.Count; i++)
             {
                 float _distance = Vector2.Distance(selectedPuzzlePiece.position, puzzleGridLocations[i].transform.position);
@@ -50,9 +70,12 @@ public class PuzzleLaying : MonoBehaviour
                 {
                     _lowestDistance = _distance;
                     _closestLocation = puzzleGridLocations[i];
+                    _index = i;
                 }
             }
+            isGridLocationTaken[_index] = true;
             selectedPuzzlePiece.position = _closestLocation.position;
+            StartCoroutine(CheckAllPieces());
             placementAudio.clip = audioClips[1];
             placementAudio.Play();
         }
@@ -67,5 +90,17 @@ public class PuzzleLaying : MonoBehaviour
         //        closestDiggableItem = diggableItemsInRange[i];
         //    }
         //}
+    }
+
+    public IEnumerator CheckAllPieces()
+    {
+        for (int i = 0; i < puzzlePieces.Count; i++)
+        {
+            BoxCollider2D _collider = puzzlePieces[i].GetComponent<BoxCollider2D>();
+            _collider.enabled = false;
+            puzzlePieces[i].Placed();
+            _collider.enabled = true;
+            yield return new WaitForSeconds(0.05f);
+        }
     }
 }
