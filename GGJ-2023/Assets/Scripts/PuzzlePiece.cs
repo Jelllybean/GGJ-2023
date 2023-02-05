@@ -15,7 +15,7 @@ public class PuzzlePiece : MonoBehaviour
     [SerializeField] private List<Vector2> raycastDirections = new List<Vector2>();
     [SerializeField] private List<int> requiredIndex = new List<int>();
     [SerializeField] private List<int> distance = new List<int>();
-    [SerializeField] private List<bool> correctlyPlaced = new List<bool>();
+    public List<bool> correctlyPlaced = new List<bool>();
     [SerializeField] private LayerMask puzzleLayer;
     
     void Start()

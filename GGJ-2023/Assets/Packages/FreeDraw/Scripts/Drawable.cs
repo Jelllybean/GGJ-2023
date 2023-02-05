@@ -331,6 +331,41 @@ namespace FreeDraw
                 ResetCanvas();
         }
 
+        private void OnEnable()
+        {
+            drawable = this;
+            // DEFAULT BRUSH SET HERE
+            current_brush = PenBrush;
+
+            drawable_sprite = this.GetComponent<SpriteRenderer>().sprite;
+            //drawable_texture = drawable_sprite.texture;
+            UpdateCharacterTexture();
+            //drawable_texture = CopyTexture2D(earthDrawingSprite.texture);
+            //drawable_texture.Apply();
+
+            // Initialize clean pixels to use
+            //clean_colours_array = new Color[(int)drawable_sprite.rect.width * (int)drawable_sprite.rect.height];
+            //for (int x = 0; x < clean_colours_array.Length; x++)
+            //    clean_colours_array[x] = Reset_Colour;
+
+
+            //clean_colours_array = new Color[(int)earthDrawingSprite.rect.width * (int)earthDrawingSprite.rect.height];
+            //for (int x = 0; x < (int)earthDrawingSprite.rect.width; x++)
+            //{
+            //    for (int y = 0; y < (int)earthDrawingSprite.rect.height; y++)
+            //    {
+            //        clean_colours_array[x] = earthDrawingSprite.texture.GetPixel(x, y);
+            //    }
+            //}
+            // Should we reset our canvas image when we hit play in the editor?
+            if (Reset_Canvas_On_Play)
+                ResetCanvas();
+        }
+        public void ResetDrawing()
+        {
+
+        }
+
         public Texture2D CopyTexture2D(Texture2D copiedTexture)
         {
             //Create a new Texture2D, which will be the copy.

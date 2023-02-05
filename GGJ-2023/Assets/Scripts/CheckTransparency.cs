@@ -9,6 +9,9 @@ public class CheckTransparency : MonoBehaviour
     public Transform buriedItem;
     public BuriedItem currentDugItem;
     public GameObject filler;
+    public GameObject miniGameHolder;
+    public GameObject normalGameHolder;
+    public GameObject MainCamera;
 
     public Vector2 fillerSize = Vector2.one * 0.5f;
     public Vector2 spacing = Vector2.one * 0.1f;
@@ -35,6 +38,8 @@ public class CheckTransparency : MonoBehaviour
         int totalCleared = 0;
 
         Texture2D _texture = spriteRenderer.sprite.texture;
+        Debug.Log(spriteRenderer.sprite.texture.width);
+        Debug.Log(spriteRenderer.sprite.texture.height);
 
         if (buriedItem.transform.position.x < 0)
         {
@@ -82,6 +87,10 @@ public class CheckTransparency : MonoBehaviour
             if(currentDugItem)
             {
                 currentDugItem.SetToFound();
+                miniGameHolder.SetActive(false);
+                normalGameHolder.SetActive(true);
+                MainCamera.SetActive(true);
+                Movement.MovementSingleton.canMove = true;
             }
         }
     }

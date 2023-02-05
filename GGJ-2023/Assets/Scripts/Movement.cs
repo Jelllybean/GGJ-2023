@@ -28,6 +28,11 @@ public class Movement : MonoBehaviour
         {
             horizontal = Input.GetAxisRaw("Horizontal");
             vertical = Input.GetAxisRaw("Vertical");
+            rigidBody.simulated = true;
+        }
+        else
+        {
+            rigidBody.simulated = false;
         }
         if(horizontal < 0)
         {

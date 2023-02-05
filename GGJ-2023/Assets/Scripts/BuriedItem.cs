@@ -11,5 +11,6 @@ public class BuriedItem : MonoBehaviour
     {
         hasBeenDug = true;
         correspondingPuzzlePiece.isFound = true;
+        gameObject.SetActive(false);
     }
 }
