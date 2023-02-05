@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class StoreScore : MonoBehaviour
 {
     public float finalScore;
+    public TextMeshProUGUI finalScoreText;
 
     public static StoreScore storeScoreInstance;
     private void Awake()
@@ -15,7 +17,7 @@ public class StoreScore : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        finalScoreText.text = "Final Score: " + finalScore;
     }
 
 
