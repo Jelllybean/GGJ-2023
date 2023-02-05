@@ -21,6 +21,9 @@ public class SnifferAbility : MonoBehaviour
 
     private float distance;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource oinkNoisePlayer;
+    [SerializeField] private List<AudioClip> oinkNoises = new List<AudioClip>();
 
     private void Start()
     {
@@ -55,6 +58,11 @@ public class SnifferAbility : MonoBehaviour
             if(distance < closestDiggableItem.innerRadius)
             {
                 rangeIndicator.value = rangeIndicator.maxValue;
+            }
+            if(!oinkNoisePlayer.isPlaying)
+            {
+                oinkNoisePlayer.clip = oinkNoises[Random.Range(0, oinkNoises.Count)];
+                oinkNoisePlayer.Play();
             }
         }
 

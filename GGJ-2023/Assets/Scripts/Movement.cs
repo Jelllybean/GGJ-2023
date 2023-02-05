@@ -7,7 +7,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private Rigidbody2D rigidBody;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private float speed = 1;
-    public Animator pigAnimatorController; 
+    public Animator pigAnimatorController;
 
     private float horizontal;
     private float vertical;
@@ -17,6 +17,7 @@ public class Movement : MonoBehaviour
     public static Movement MovementSingleton;
 
     [Header("Audio")]
+    [SerializeField] private AudioSource relicFound;
     [SerializeField] private AudioSource walkingSoundsPlayer;
     [SerializeField] private List<AudioClip> walkingSounds = new List<AudioClip>();
     private int randomIndex = 0;
@@ -29,7 +30,7 @@ public class Movement : MonoBehaviour
 
     void Update()
     {
-        if(canMove)
+        if (canMove)
         {
             horizontal = Input.GetAxisRaw("Horizontal");
             vertical = Input.GetAxisRaw("Vertical");
@@ -40,11 +41,11 @@ public class Movement : MonoBehaviour
             rigidBody.simulated = false;
             walkingSoundsPlayer.Stop();
         }
-        if(horizontal < 0)
+        if (horizontal < 0)
         {
             spriteRenderer.flipX = true;
         }
-        else if(horizontal > 0)
+        else if (horizontal > 0)
         {
             spriteRenderer.flipX = false;
         }
@@ -52,14 +53,14 @@ public class Movement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(canMove)
+        if (canMove)
         {
             rigidBody.velocity = new Vector2(horizontal * speed, vertical * speed);
 
-            if(rigidBody.velocity != Vector2.zero)
+            if (rigidBody.velocity != Vector2.zero)
             {
                 pigAnimatorController.SetBool("isWalking", true);
-                if(!isAlreadyPlaying)
+                if (!isAlreadyPlaying)
                 {
                     walkingSoundsPlayer.clip = walkingSounds[randomIndex];
                     walkingSoundsPlayer.Play();
@@ -86,5 +87,10 @@ public class Movement : MonoBehaviour
     {
         Movement.MovementSingleton.canMove = true;
         pigAnimatorController.SetBool("hasFound", false);
+    }
+
+    public void PlayRelicSound()
+    {
+        relicFound.Play();
     }
 }
