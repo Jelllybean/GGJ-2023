@@ -10,11 +10,14 @@ public class SnifferAbility : MonoBehaviour
     [SerializeField] private List<DiggableItem> diggableItemsInRange = new List<DiggableItem>();
 
     [SerializeField] private DiggableItem closestDiggableItem;
+    [SerializeField] private GameObject miniGameHolder;
+    [SerializeField] private GameObject normalGameHolder;
+    [SerializeField] private GameObject puzzleGameHolder;
 
     [SerializeField] private Slider rangeIndicator;
     [SerializeField] private Slider staminaIndicator;
 
-    [SerializeField] private float stamina;
+    public float stamina;
 
     private float distance;
 
@@ -38,7 +41,7 @@ public class SnifferAbility : MonoBehaviour
             }
         }
 
-        staminaIndicator.value = Mathf.MoveTowards(staminaIndicator.value, stamina, 0.4f * Time.deltaTime);
+        staminaIndicator.value = Mathf.MoveTowards(staminaIndicator.value, stamina, 2f * Time.deltaTime);
 
         if (closestDiggableItem)
         {
@@ -49,22 +52,36 @@ public class SnifferAbility : MonoBehaviour
             //Mathf.Lerp(0,)
             distance = Vector2.Distance(closestDiggableItem.transform.position, transform.position);
             rangeIndicator.value = Mathf.InverseLerp(closestDiggableItem.radius, closestDiggableItem.innerRadius, distance) * 3;
-
         }
 
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && Movement.MovementSingleton.canMove)
         {
             if(closestDiggableItem)
             {
                 if (distance < closestDiggableItem.innerRadius)
                 {
                     //start digging sequence
+                    miniGameHolder.SetActive(true);
+                    normalGameHolder.SetActive(false);
+                    closestDiggableItem.gameObject.SetActive(false);
+                    Movement.MovementSingleton.canMove = false;
+                    Camera.main.gameObject.SetActive(false);
+                    SpawnRandomDiggableItem.spawnRandomDiggableItem.SpawnRandomPlace();
+                    closestDiggableItem = null;
+                    rangeIndicator.value = 0;
                 }
             }
             stamina -= 1;
         }
 
+        if(stamina <= 0)
+        {
+            miniGameHolder.SetActive(false);
+            normalGameHolder.SetActive(false);
+            puzzleGameHolder.SetActive(true);
+            gameObject.SetActive(false);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

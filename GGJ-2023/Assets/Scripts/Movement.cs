@@ -5,27 +5,59 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D rigidBody;
-
+    [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private float speed = 1;
+    [SerializeField] private Animator pigAnimatorController; 
 
     private float horizontal;
     private float vertical;
 
-    // Start is called before the first frame update
-    void Start()
+    public bool canMove = true;
+
+    public static Movement MovementSingleton;
+
+    void Awake()
     {
-        
+        MovementSingleton = this;
     }
 
     // Update is called once per frame
     void Update()
     {
-        horizontal = Input.GetAxisRaw("Horizontal");
-        vertical = Input.GetAxisRaw("Vertical");
+        if(canMove)
+        {
+            horizontal = Input.GetAxisRaw("Horizontal");
+            vertical = Input.GetAxisRaw("Vertical");
+            rigidBody.simulated = true;
+        }
+        else
+        {
+            rigidBody.simulated = false;
+        }
+        if(horizontal < 0)
+        {
+            spriteRenderer.flipX = true;
+        }
+        else if(horizontal > 0)
+        {
+            spriteRenderer.flipX = false;
+        }
     }
 
     private void FixedUpdate()
     {
-        rigidBody.velocity = new Vector2(horizontal * speed, vertical * speed);
+        if(canMove)
+        {
+            rigidBody.velocity = new Vector2(horizontal * speed, vertical * speed);
+
+            if(rigidBody.velocity != Vector2.zero)
+            {
+                pigAnimatorController.SetBool("isWalking", true);
+            }
+            else
+            {
+                pigAnimatorController.SetBool("isWalking", false);
+            }
+        }
     }
 }
