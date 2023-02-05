@@ -11,9 +11,11 @@ public class DialogueManager : MonoBehaviour
     public TMP_Text dialogueText;
 
     public GameObject dialogueBox;
+    public GameObject TruckScene;
+    public GameObject OpeningCutScene;
     private Queue<string> sentences;
     
-    void Start()
+    void Awake()
     {
         sentences = new Queue<string>();
     }
@@ -51,6 +53,7 @@ public class DialogueManager : MonoBehaviour
     {
         Debug.Log("End of conversation");
         dialogueBox.SetActive(false);
-
+        TruckScene.SetActive(true);
+        OpeningCutScene.SetActive(false);
     }
 }

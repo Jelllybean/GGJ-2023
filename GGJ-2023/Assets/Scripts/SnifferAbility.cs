@@ -52,6 +52,10 @@ public class SnifferAbility : MonoBehaviour
             //Mathf.Lerp(0,)
             distance = Vector2.Distance(closestDiggableItem.transform.position, transform.position);
             rangeIndicator.value = Mathf.InverseLerp(closestDiggableItem.radius, closestDiggableItem.innerRadius, distance) * 3;
+            if(distance < closestDiggableItem.innerRadius)
+            {
+                rangeIndicator.value = rangeIndicator.maxValue;
+            }
         }
 
 

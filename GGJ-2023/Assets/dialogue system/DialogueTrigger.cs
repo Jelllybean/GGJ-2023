@@ -6,8 +6,14 @@ public class DialogueTrigger : MonoBehaviour
 {
     public Dialogue dialogue;
 
-    public void TriggerDialogue()
+    private void Start()
     {
         FindObjectOfType<DialogueManager>().StartDialogue(dialogue);
+        gameObject.SetActive(false);
+    }
+
+    public void TriggerDialogue()
+    {
+        
     }
 }
