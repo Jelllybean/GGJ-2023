@@ -4,30 +4,15 @@ using UnityEngine;
 
 public class TruckScene : MonoBehaviour
 {
-    public AudioSource truckSoundsPlayer;
-    public List<AudioClip> truckSounds = new List<AudioClip>();
-    
+
+    [SerializeField] private GameObject puzzleMiniGameObject;
     void Start()
     {
-        PlayStartup();
-        Invoke("PlayContinous", truckSounds[0].length);
+        Invoke("EnablePuzzle", 4f);
     }
 
-    public void PlayStartup()
+    public void EnablePuzzle()
     {
-        truckSoundsPlayer.clip = truckSounds[0];
-        truckSoundsPlayer.Play();
-    }
-
-    public void PlayContinous()
-    {
-        truckSoundsPlayer.clip = truckSounds[1];
-        truckSoundsPlayer.Play();
-    }
-
-    public void PlayStopping() 
-    {
-        truckSoundsPlayer.clip = truckSounds[2];
-        truckSoundsPlayer.Play();
+        puzzleMiniGameObject.SetActive(true);
     }
 }

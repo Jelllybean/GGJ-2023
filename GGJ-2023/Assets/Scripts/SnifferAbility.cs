@@ -84,6 +84,7 @@ public class SnifferAbility : MonoBehaviour
             miniGameHolder.SetActive(false);
             normalGameHolder.SetActive(false);
             puzzleGameHolder.SetActive(true);
+            puzzleGameHolder.GetComponent<TruckScene>().enabled = true;
             gameObject.SetActive(false);
         }
     }

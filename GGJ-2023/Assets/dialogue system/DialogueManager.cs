@@ -11,8 +11,8 @@ public class DialogueManager : MonoBehaviour
     public TMP_Text dialogueText;
 
     public GameObject dialogueBox;
-    public GameObject TruckScene;
-    public GameObject OpeningCutScene;
+    public List<GameObject> objectsToTurnOff = new List<GameObject>();
+    public List<GameObject> objectsToTurnOn = new List<GameObject>();
     private Queue<string> sentences;
     
     void Awake()
@@ -53,7 +53,13 @@ public class DialogueManager : MonoBehaviour
     {
         Debug.Log("End of conversation");
         dialogueBox.SetActive(false);
-        TruckScene.SetActive(true);
-        OpeningCutScene.SetActive(false);
+        for (int i = 0; i < objectsToTurnOff.Count; i++)
+        {
+            objectsToTurnOff[i].SetActive(false);
+        }
+        for (int i = 0; i < objectsToTurnOn.Count; i++)
+        {
+            objectsToTurnOn[i].SetActive(true);
+        }
     }
 }
