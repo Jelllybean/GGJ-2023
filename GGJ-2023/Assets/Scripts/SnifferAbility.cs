@@ -66,14 +66,7 @@ public class SnifferAbility : MonoBehaviour
                 if (distance < closestDiggableItem.innerRadius)
                 {
                     //start digging sequence
-                    miniGameHolder.SetActive(true);
-                    normalGameHolder.SetActive(false);
-                    closestDiggableItem.gameObject.SetActive(false);
-                    Movement.MovementSingleton.canMove = false;
-                    Camera.main.gameObject.SetActive(false);
-                    SpawnRandomDiggableItem.spawnRandomDiggableItem.SpawnRandomPlace();
-                    closestDiggableItem = null;
-                    rangeIndicator.value = 0;
+                    StartDigging();
                 }
             }
             stamina -= 1;
@@ -89,11 +82,22 @@ public class SnifferAbility : MonoBehaviour
         }
     }
 
+    public void StartDigging()
+    {
+        miniGameHolder.SetActive(true);
+        normalGameHolder.SetActive(false);
+        Movement.MovementSingleton.canMove = false;
+        closestDiggableItem.gameObject.SetActive(false);
+        Camera.main.gameObject.SetActive(false);
+        SpawnRandomDiggableItem.spawnRandomDiggableItem.SpawnRandomPlace();
+        closestDiggableItem = null;
+        rangeIndicator.value = 0;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("DiggableItem"))
         {
-            Debug.Log("fakka");
             diggableItemsInRange.Add(collision.GetComponent<DiggableItem>());
         }
     }

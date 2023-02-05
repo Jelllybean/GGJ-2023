@@ -7,7 +7,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private Rigidbody2D rigidBody;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private float speed = 1;
-    [SerializeField] private Animator pigAnimatorController; 
+    public Animator pigAnimatorController; 
 
     private float horizontal;
     private float vertical;
@@ -74,5 +74,17 @@ public class Movement : MonoBehaviour
                 isAlreadyPlaying = false;
             }
         }
+    }
+
+    public void PlayFoundAnimation()
+    {
+        Movement.MovementSingleton.canMove = false;
+        pigAnimatorController.SetBool("hasFound", true);
+    }
+
+    public void FoundAnimationOver()
+    {
+        Movement.MovementSingleton.canMove = true;
+        pigAnimatorController.SetBool("hasFound", false);
     }
 }
