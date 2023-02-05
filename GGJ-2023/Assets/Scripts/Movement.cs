@@ -68,6 +68,7 @@ public class Movement : MonoBehaviour
             }
             else
             {
+                walkingSoundsPlayer.Stop();
                 pigAnimatorController.SetBool("isWalking", false);
                 randomIndex = Random.Range(0, walkingSounds.Count);
                 isAlreadyPlaying = false;
