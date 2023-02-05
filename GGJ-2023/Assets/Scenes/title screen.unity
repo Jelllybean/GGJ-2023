@@ -2201,38 +2201,39 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Emily:
+  m_text: 'Emily van der Schaaf:
 
     -Development
 
 
-    Celeste:
+    Celeste Storm:
 
     -Design
 
-    -Relic Sprites
+    -Relic
+    Sprites
 
 
-    Jelt:
+    Jelt van der Leer:
 
-    -Character
-    sprites
-
-
-    Gwenne:
-
-    -Environment Sprites
+    -Character sprites
 
 
-    Silver (de pilver):
+    Gwenne Reiniers:
 
-    -Concept
-    art
+    -Environment
+    Sprites
 
 
-    Timo:
+    Silver (de pilver) Klapwijk:
 
-    Audio and Music
+    -Concept art
+
+
+    Timo Kolk:
+
+    Audio
+    and Music
 
 
     40cm:
@@ -2240,7 +2241,7 @@ MonoBehaviour:
     emotional support
 
 
-    Mana:
+    Mana Kouwberg:
 
     programming
     helpdesk
