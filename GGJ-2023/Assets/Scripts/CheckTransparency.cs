@@ -90,7 +90,7 @@ public class CheckTransparency : MonoBehaviour
                 miniGameHolder.SetActive(false);
                 normalGameHolder.SetActive(true);
                 MainCamera.SetActive(true);
-                Movement.MovementSingleton.canMove = true;
+                Movement.MovementSingleton.PlayFoundAnimation();
             }
         }
     }
